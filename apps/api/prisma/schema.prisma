@@ -61,7 +61,7 @@ model Voucher {
   user User @relation(fields: [user_id], references: [id])
   amount Int
   startAt DateTime @default(now())
-  endAt DateTime @default(dbgenerated("NOW()+INTERVAL 3 MONTH"))
+  endAt DateTime @default(dbgenerated("(NOW() + '90 days')"))
 }
 
 model Attendee {
