@@ -19,3 +19,133 @@ model Sample {
 
   @@map("samples") // if you want to use snake_case format
 }
+
+model User {
+  id Int @id @default(autoincrement())
+  username String @unique
+  password String
+  email String
+  roleID Int
+  role Role @relation(fields: [roleID], references: [id])
+  isVerified Boolean
+  referralCodeID String @unique
+  claimedCodeID String @unique
+  point Int
+  voucher Voucher[]
+  attendee Attendee[]
+  giver ReferralHistory[] @relation("giver")
+  receiver ReferralHistory[] @relation("receiver")
+  review Review[]
+  event Event[] 
+}
+
+model Role {
+  id Int @id @default(autoincrement())
+  name String @unique
+  user User[]
+}
+
+model ReferralHistory{
+  id Int @id @default(autoincrement())
+  giver Int
+  giver_id User @relation("giver", fields: [giver], references: [id])
+  receiver Int
+  receiver_id User @relation("receiver", fields: [receiver], references: [id])
+  earnedPoint Int
+  earnedDate DateTime @default(now())
+}
+
+model Voucher {
+  id Int @id @default(autoincrement())
+  user_id Int
+  user User @relation(fields: [user_id], references: [id])
+  amount Int
+  startAt DateTime @default(now())
+  endAt DateTime @default(dbgenerated("NOW()+INTERVAL 3 MONTH"))
+}
+
+model Attendee {
+  id Int @id @default(autoincrement())
+  transaction_id Int
+  transaction Transaction @relation(fields: [transaction_id], references: [id])
+  event_code String
+  name String
+  user_id Int
+  user User @relation(fields: [user_id], references: [id])
+  ticket_id Int
+  ticket Ticket @relation(fields: [ticket_id], references: [id])
+  price Int
+  isUsed Boolean
+}
+
+model Transaction {
+  id Int @id @default(autoincrement())
+  dateCreate DateTime @default(now())
+  discount Int
+  promotion Promotion @relation(fields: [discount], references: [id])
+  quantity Int
+  total Int
+  attendee Attendee[]
+}
+
+model Ticket {
+  id Int @id @default(autoincrement())
+  event_id Int
+  event Event @relation(fields: [event_id], references: [id])
+  type String
+  price Int
+  available Int
+  attendee Attendee[]
+}
+
+model Event {
+  id Int @id @default(autoincrement())
+  organizer_id Int
+  user User @relation(fields: [organizer_id], references: [id])
+  name String
+  dateStart DateTime @db.Date
+  dateEnd DateTime @db.Date
+  time DateTime @db.Time
+  location String
+  desc String
+  type_id Int
+  type EventType @relation(fields: [type_id], references: [id])
+  category_id Int
+  category Category @relation(fields: [category_id], references: [id])
+  ticket Ticket[]
+  review Review[]
+  promotion Promotion[]
+}
+
+model Review {
+  id Int @id @default(autoincrement())
+  event_id Int
+  event Event @relation(fields: [event_id], references: [id])
+  user_id Int
+  user User @relation(fields: [user_id], references: [id])
+  rating Int
+  overall String
+  suggestion String
+}
+
+model EventType{
+  id Int @id @default(autoincrement())
+  type String
+  event Event[]
+}
+
+model Category{
+  id Int @id @default(autoincrement())
+  name String
+  event Event[]
+}
+
+model Promotion{
+  id Int @id @default(autoincrement())
+  event_id Int
+  event Event @relation(fields: [event_id], references: [id])
+  discount Int
+  startAt DateTime
+  endAt DateTime
+  transaction Transaction[]
+}
