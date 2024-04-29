@@ -23,6 +23,7 @@ CREATE TABLE `User` (
     `point` INTEGER NOT NULL,
 
     UNIQUE INDEX `User_username_key`(`username`),
+    UNIQUE INDEX `User_email_key`(`email`),
     UNIQUE INDEX `User_referralCodeID_key`(`referralCodeID`),
     UNIQUE INDEX `User_claimedCodeID_key`(`claimedCodeID`),
     PRIMARY KEY (`id`)

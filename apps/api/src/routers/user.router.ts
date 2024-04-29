@@ -14,7 +14,6 @@ export class UserRouter {
   private initializeRoutes(): void {
     this.router.get('/', this.userController.getUserData);
     this.router.get('/:id', this.userController.getUserDataById);
-    this.router.post('/', this.userController.registerUserData);
   }
 
   getRouter(): Router {

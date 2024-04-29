@@ -11,6 +11,7 @@ import cors from 'cors';
 import { PORT } from './config';
 import { SampleRouter } from './routers/sample.router';
 import { UserRouter } from './routers/user.router';
+import { AuthRouter } from './routers/auth.router';
 
 export default class App {
   private app: Express;
@@ -29,6 +30,7 @@ export default class App {
   }
 
   private handleError(): void {
+    
     // not found
     this.app.use((req: Request, res: Response, next: NextFunction) => {
       if (req.path.includes('/api/')) {
@@ -54,6 +56,7 @@ export default class App {
   private routes(): void {
     const sampleRouter = new SampleRouter();
     const userRouter = new UserRouter();
+    const authRouter = new AuthRouter();
 
     this.app.get('/', (req: Request, res: Response) => {
       res.send(`Hello, Purwadhika Student !`);
@@ -61,6 +64,7 @@ export default class App {
 
     this.app.use('/samples', sampleRouter.getRouter());
     this.app.use('/user', userRouter.getRouter());
+    this.app.use('/auth', authRouter.getRouter())
   }
 
   public start(): void {
