@@ -3,9 +3,13 @@ import prisma from '@/prisma';
 
 export class UserController {
   async getUserData(req: Request, res: Response) {
-    const userData = await prisma.user.findMany();
+    try {
+      const userData = await prisma.user.findMany();
 
-    return res.status(200).send(userData);
+      return res.status(200).send(userData);
+    } catch (e) {
+      throw e;
+    }
   }
 
   async getUserDataById(req: Request, res: Response) {

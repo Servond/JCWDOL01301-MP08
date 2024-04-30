@@ -1,7 +1,7 @@
 import prisma from '@/prisma';
 import { User } from '@prisma/client';
 import path from 'path';
-import { PORT } from '@/config';
+import { FE_URL } from '@/config';
 import * as handlebars from 'handlebars';
 import fs from 'fs';
 import { transporter } from '@/helpers/nodemailer';
@@ -21,7 +21,7 @@ export class AuthQueries {
   async registerQuery(data: User, pass: string) {
     try {
       let generateReferral = '';
-      if (data.roleID === 2) {
+      if (data.roleID === 1) {
         while (true) {
           generateReferral = await this.generateCode(6);
           const check = await prisma.user.findFirst({
@@ -49,27 +49,30 @@ export class AuthQueries {
             roleID: data.roleID,
             isVerified: false,
             referralCodeID: generateReferral,
-            claimedCodeID: data.roleID === 2 ? data.claimedCodeID : '',
+            claimedCodeID: data.roleID === 1 ? data.claimedCodeID : '',
             point: 0,
           },
         });
-
-        const token = '';
-        const urlVerify = ` http://localhost:${PORT}/verify?token=${token}`;
+        console.log("New User Data!",newUserData);
+        const token = 'budianduk';
+        const urlVerify = `${FE_URL}/verify?token=${token}`;
         const templatePath = path.join(
           __dirname,
           '../templates',
           'registrationEmail.hbs',
         );
+        console.log(templatePath);
         const templateSource = fs.readFileSync(templatePath, 'utf-8');
         const compiledTemplate = handlebars.compile(templateSource);
         const html = compiledTemplate({
           username: newUserData.username,
-          roleID: newUserData.roleID,
+          roleID: newUserData.roleID === 1 ? "Customer" : "Event Organizer",
+          act: newUserData.roleID === 1 ? "buy" : "sell",
           url: urlVerify,
         });
+        console.log("email terkirim!")
         await transporter.sendMail({
-          from: 'sender address',
+          from: 'TICKET',
           to: newUserData.email,
           subject: 'Please verified before proceed buying or selling ticket!',
           html,
@@ -103,5 +106,9 @@ export class AuthQueries {
     } catch (e) {
       throw e;
     }
+  }
+
+  async verifyQuery(data: User){
+    
   }
 }

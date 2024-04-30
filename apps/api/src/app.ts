@@ -62,9 +62,9 @@ export default class App {
       res.send(`Hello, Purwadhika Student !`);
     });
 
-    this.app.use('/samples', sampleRouter.getRouter());
-    this.app.use('/user', userRouter.getRouter());
-    this.app.use('/auth', authRouter.getRouter())
+    this.app.use('/api/samples', sampleRouter.getRouter());
+    this.app.use('/api/user', userRouter.getRouter());
+    this.app.use('/api/auth', authRouter.getRouter())
   }
 
   public start(): void {
