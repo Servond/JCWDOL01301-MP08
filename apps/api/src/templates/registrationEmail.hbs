@@ -1,0 +1,17 @@
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title>Email Confirmation</title>
+  </head>
+  <body>
+    <h1>Hello {{username}}</h1>
+    <h2>Welcome to TICKER</h2>
+    <h2>We see you are registering this account as {{roleID}}!</h2>
+    <p>Before we allow you to {{act}} your ticket,</p>
+    <p>please verify first your account!</p>
+    {{!-- <button onclick={() => <a href={{url}} />} >Verify</button> --}}
+    <a href={{url}}>Verify</a>
+    <p>Thank you!</p>
+  </body>
+</html>
