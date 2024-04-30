@@ -3,6 +3,7 @@ import { resolve } from 'path';
 
 export const NODE_ENV = process.env.NODE_ENV || 'development';
 
+
 const envFile = NODE_ENV === 'development' ? '.env.development' : '.env';
 // const envFile = '.env';
 
