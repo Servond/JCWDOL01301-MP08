@@ -31,9 +31,5 @@
       "pre-commit": "npx lint-staged"
     }
   },
-  "dependencies": {
-    "@types/nodemailer": "^6.4.14",
-    "handlebars": "^4.7.8",
-    "nodemailer": "^6.9.13"
-  }
+  "dependencies": {}
 }

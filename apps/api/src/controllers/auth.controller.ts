@@ -30,4 +30,17 @@ export class AuthControllers {
       next(e);
     }
   }
+
+  async verifyController(req: Request, res: Response, next: NextFunction) {
+    const authAction = new AuthAction();
+    try {
+      const data = await authAction.verifyAction(req.body);
+      res.status(200).json({
+        message: `Email verified, Enjoy!`,
+        data,
+      });
+    } catch (e) {
+      next(e);
+    }
+  }
 }

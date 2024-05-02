@@ -30,7 +30,6 @@ export default class App {
   }
 
   private handleError(): void {
-    
     // not found
     this.app.use((req: Request, res: Response, next: NextFunction) => {
       if (req.path.includes('/api/')) {
@@ -45,7 +44,7 @@ export default class App {
       (err: Error, req: Request, res: Response, next: NextFunction) => {
         if (req.path.includes('/api/')) {
           console.error('Error : ', err.stack);
-          res.status(500).send('Error !');
+          res.status(500).send(err.message);
         } else {
           next();
         }
@@ -64,12 +63,14 @@ export default class App {
 
     this.app.use('/api/samples', sampleRouter.getRouter());
     this.app.use('/api/user', userRouter.getRouter());
-    this.app.use('/api/auth', authRouter.getRouter())
+    this.app.use('/api/auth', authRouter.getRouter());
   }
 
   public start(): void {
     this.app.listen(PORT, () => {
-      console.log(`  ➜  [API] Local:   http://localhost:${PORT}/ ${process.env.NODE_ENV}`);
+      console.log(
+        `  ➜  [API] Local:   http://localhost:${PORT}/ ${process.env.NODE_ENV}`,
+      );
     });
   }
 }

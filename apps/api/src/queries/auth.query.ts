@@ -53,8 +53,8 @@ export class AuthQueries {
             point: 0,
           },
         });
-        console.log("New User Data!",newUserData);
-        const token = 'budianduk';
+        console.log('New User Data!', newUserData);
+        const token = this.generateCode(10);
         const urlVerify = `${FE_URL}/verify?token=${token}`;
         const templatePath = path.join(
           __dirname,
@@ -66,18 +66,18 @@ export class AuthQueries {
         const compiledTemplate = handlebars.compile(templateSource);
         const html = compiledTemplate({
           username: newUserData.username,
-          roleID: newUserData.roleID === 1 ? "Customer" : "Event Organizer",
-          act: newUserData.roleID === 1 ? "buy" : "sell",
+          roleID: newUserData.roleID === 1 ? 'Customer' : 'Event Organizer',
+          act: newUserData.roleID === 1 ? 'buy' : 'sell',
           url: urlVerify,
         });
-        console.log("email terkirim!")
+        console.log('email terkirim!');
         await transporter.sendMail({
           from: 'TICKET',
           to: newUserData.email,
           subject: 'Please verified before proceed buying or selling ticket!',
           html,
         });
-        return newUserData;
+        return { newUserData, token };
       });
     } catch (e) {
       throw e;
@@ -108,7 +108,21 @@ export class AuthQueries {
     }
   }
 
-  async verifyQuery(data: User){
-    
+  async verifyQuery(data: User) {
+    try {
+      await prisma.$transaction(async (prisma) => {
+        const verify = await prisma.user.update({
+          where: {
+            email: data.email,
+          },
+          data: {
+            isVerified: true,
+          },
+        });
+        return verify;
+      });
+    } catch (e) {
+      throw e;
+    }
   }
 }
