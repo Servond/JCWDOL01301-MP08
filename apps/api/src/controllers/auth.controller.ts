@@ -40,6 +40,7 @@ export class AuthControllers {
     } catch (e) {
       next(e);
     }
+
   };
 
   public refreshTokenController = async (
@@ -70,9 +71,12 @@ export class AuthControllers {
       res.status(200).json({
         message: `Email verified, Enjoy!`,
         data: data,
+
       });
     } catch (e) {
       next(e);
     }
+
   };
+
 }

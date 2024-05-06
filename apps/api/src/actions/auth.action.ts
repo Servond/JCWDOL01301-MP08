@@ -38,6 +38,7 @@ export class AuthAction {
       const user = await this.userQuery.getUserByEmail(data.email);
       if (!user) throw new HttpException(500, "Email doesn't exist!");
       const isValid = await compare(data.password, user.password);
+
       if (!isValid) throw new HttpException(500, 'Wrong password!');
       if (user.isVerified === false)
         throw new HttpException(
@@ -45,11 +46,13 @@ export class AuthAction {
           'Your account is not verified, Check your email first!',
         );
       const payload = {
+
         id: user.id,
         email: user.email,
         username: user.username,
         role: user.role.name,
       };
+
       const token = sign(payload, String(API_KEY), { expiresIn: '1h' });
       return { user, token };
     } catch (e) {
@@ -81,7 +84,21 @@ export class AuthAction {
           'Your account is already verified, you can access your account right now',
         );
       await this.authQuery.verifyQuery(check!.email);
+
     } catch (e) {
+      throw e;
+    }
+  }
+
+  async verifyAction(data: User){
+    const userQueries = new UserQueries();
+    const authQueries = new AuthQueries();
+    try{
+      const check = await userQueries.getUserByEmail(data.email);
+      if(check?.isVerified===true)throw new Error("Your account is already verified, you can access your account right now");
+      const user = await authQueries.verifyQuery(data);
+      return user;
+    }catch(e){
       throw e;
     }
   }

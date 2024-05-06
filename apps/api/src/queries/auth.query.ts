@@ -102,6 +102,7 @@ export class AuthQueries {
         } catch (e) {
           throw e;
         }
+
       });
     } catch (e) {
       throw e;
@@ -132,6 +133,7 @@ export class AuthQueries {
     }
   }
 
+
   public async verifyQuery(email: string) {
     try {
       await prisma.$transaction(async (prisma) => {
@@ -148,6 +150,7 @@ export class AuthQueries {
         } catch (e) {
           throw e;
         }
+
       });
     } catch (e) {
       throw e;

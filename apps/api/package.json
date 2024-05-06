@@ -24,7 +24,9 @@
     "reflect-metadata": "^0.2.2",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
+
     "typedi": "^0.4.3",
+
     "typescript": "^5.3.3"
   },
   "devDependencies": {
