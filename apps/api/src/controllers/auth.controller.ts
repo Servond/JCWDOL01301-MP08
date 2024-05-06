@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { AuthAction } from '@/actions/auth.action';
 import { Container, Service } from 'typedi';
+import prisma from '@/prisma';
+import { User } from '@prisma/client';
 
 @Service()
 export class AuthControllers {
@@ -40,7 +42,6 @@ export class AuthControllers {
     } catch (e) {
       next(e);
     }
-
   };
 
   public refreshTokenController = async (
@@ -75,12 +76,9 @@ export class AuthControllers {
       res.status(200).json({
         message: `Email verified, Enjoy!`,
         data: data,
-
       });
     } catch (e) {
       next(e);
     }
-
   };
-
 }

@@ -7,6 +7,7 @@ import { AuthQueries } from '@/queries/auth.query';
 import { UserQueries } from '@/queries/user.query';
 import { Auth } from '@/interfaces/auth.interface';
 import { HttpException } from '@/exceptions/HttpException';
+import prisma from '@/prisma';
 
 @Service()
 export class AuthAction {
@@ -46,7 +47,6 @@ export class AuthAction {
           'Your account is not verified, Check your email first!',
         );
       const payload = {
-
         id: user.id,
         email: user.email,
         username: user.username,
@@ -58,7 +58,7 @@ export class AuthAction {
     } catch (e) {
       throw e;
     }
-  }
+  };
 
   public refreshTokenAction = async (email: string) => {
     try {
@@ -73,33 +73,20 @@ export class AuthAction {
     } catch (e) {
       throw e;
     }
-  }
+  };
 
-  public verifyAction = async(email: string) => {
+  public verifyAction = async (email: string) => {
     try {
       const check = await this.userQuery.getUserByEmail(email);
-      if (check?.isVerified === true)
+      if (check?.isVerified === true) {
         throw new HttpException(
           500,
           'Your account is already verified, you can access your account right now',
         );
+      }
       await this.authQuery.verifyQuery(check!.email);
-
     } catch (e) {
       throw e;
     }
-  }
-
-  async verifyAction(data: User){
-    const userQueries = new UserQueries();
-    const authQueries = new AuthQueries();
-    try{
-      const check = await userQueries.getUserByEmail(data.email);
-      if(check?.isVerified===true)throw new Error("Your account is already verified, you can access your account right now");
-      const user = await authQueries.verifyQuery(data);
-      return user;
-    }catch(e){
-      throw e;
-    }
-  }
+  };
 }
