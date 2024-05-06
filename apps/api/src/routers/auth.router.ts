@@ -18,6 +18,7 @@ export class AuthRouter {
 
     this.router.post('/register', this.authControllers.registerController);
     this.router.post('/login', this.authControllers.loginController);
+
     this.router.get(
       '/verify',
       this.authGuard.verifyToken,
@@ -28,6 +29,7 @@ export class AuthRouter {
       this.authGuard.verifyToken,
       this.authControllers.refreshTokenController,
     );
+
     // this.router.patch('/verify', this.authControllers.verifyController);
 
   }

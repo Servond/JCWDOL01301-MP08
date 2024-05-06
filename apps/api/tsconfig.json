@@ -14,8 +14,10 @@
     "typeRoots": ["./types/express/*.ts"],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+
     "strictPropertyInitialization": false,
     "noEmit": true
+
   },
   // "include": ["src/**/*"],
   "include": ["**/*.ts"],
