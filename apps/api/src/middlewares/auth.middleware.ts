@@ -1,10 +1,12 @@
-import { Request, NextFunction } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { verify } from 'jsonwebtoken';
 import { API_KEY } from '@/config';
 import { User } from '@/types/express';
 
 export class AuthMiddlewares {
-  public verifyToken = async (req: Request, next: NextFunction) => {
+
+  public verifyToken = async (req: Request, res:Response, next: NextFunction) => {
+
     try {
       const token = req.header('Authorization')?.replace('Bearer ', '');
       if (!token) throw new Error('Token invalid!');

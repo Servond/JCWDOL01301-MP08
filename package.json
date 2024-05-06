@@ -33,7 +33,9 @@
     }
   },
   "dependencies": {
-    "typedi": "^0.10.0"
+    "typedi": "^0.10.0",
+    "typescript": "^5.4.5"
+
   }
 
 }
