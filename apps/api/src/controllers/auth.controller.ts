@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { AuthAction } from '@/actions/auth.action';
 import { Container, Service } from 'typedi';
+import prisma from '@/prisma';
+import { User } from '@prisma/client';
 
 @Service()
 export class AuthControllers {
@@ -40,7 +42,6 @@ export class AuthControllers {
     } catch (e) {
       next(e);
     }
-
   };
 
   public refreshTokenController = async (
@@ -49,9 +50,7 @@ export class AuthControllers {
     next: NextFunction,
   ) => {
     try {
-
       const { email } = req.user;
-
       const data = await this.authAction.refreshTokenAction(email);
       res.status(200).json({
         message: 'Refresh token success',
@@ -68,19 +67,14 @@ export class AuthControllers {
     next: NextFunction,
   ) => {
     try {
-
       const { email } = req.user;
-
       const data = await this.authAction.verifyAction(email);
       res.status(200).json({
         message: `Email verified, Enjoy!`,
         data: data,
-
       });
     } catch (e) {
       next(e);
     }
-
   };
-
 }

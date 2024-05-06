@@ -79,10 +79,19 @@ export class AuthQueries {
         });
         if (!availableReferralCode) {
           throw new HttpException(500, 'Referral code not available');
+        } else {
+          const pointReceiver = await prisma.user.findUnique({
+            where: { referralCodeID: data.claimedCodeID },
+          });
+          await prisma.$transaction(async (prisma) => {
+            await prisma.user.update({
+              where: { referralCodeID: data.claimedCodeID },
+              data: { point: pointReceiver.point + 10000 },
+            });
+          });
         }
       }
 
-      
       await prisma.$transaction(async (prisma) => {
         try {
           const newUserData = await prisma.user.create({
@@ -102,7 +111,6 @@ export class AuthQueries {
         } catch (e) {
           throw e;
         }
-
       });
     } catch (e) {
       throw e;
@@ -133,7 +141,6 @@ export class AuthQueries {
     }
   }
 
-
   public async verifyQuery(email: string) {
     try {
       await prisma.$transaction(async (prisma) => {
@@ -150,7 +157,6 @@ export class AuthQueries {
         } catch (e) {
           throw e;
         }
-
       });
     } catch (e) {
       throw e;
