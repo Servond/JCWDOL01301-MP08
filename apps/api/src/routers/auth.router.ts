@@ -15,11 +15,13 @@ export class AuthRouter {
   }
 
   private initializeRoutes(): void {
+
     this.router.post('/register', this.authControllers.registerController);
     this.router.post('/login', this.authControllers.loginController);
     this.router.get('/verify', this.authControllers.verifyController);
     this.router.get('/', this.authControllers.refreshTokenController);
     // this.router.patch('/verify', this.authControllers.verifyController);
+
   }
 
   getRouter(): Router {
