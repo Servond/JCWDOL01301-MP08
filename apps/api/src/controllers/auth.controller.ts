@@ -48,7 +48,7 @@ export class AuthControllers {
     next: NextFunction,
   ) => {
     try {
-      const { email } = req.body;
+      const { email } = req.user;
       const data = await this.authAction.refreshTokenAction(email);
       res.status(200).json({
         message: 'Refresh token success',
@@ -65,7 +65,7 @@ export class AuthControllers {
     next: NextFunction,
   ) => {
     try {
-      const { email } = req.body;
+      const { email } = req.user;
       const data = await this.authAction.verifyAction(email);
       res.status(200).json({
         message: `Email verified, Enjoy!`,
