@@ -11,7 +11,10 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "typeRoots": ["./types/*.ts"]
+    "typeRoots": ["./types/express/*.ts"],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "strictPropertyInitialization": false
   },
   // "include": ["src/**/*"],
   "include": ["**/*.ts"],

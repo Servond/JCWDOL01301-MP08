@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import express, {
   json,
   urlencoded,
@@ -12,6 +13,7 @@ import { PORT } from './config';
 import { SampleRouter } from './routers/sample.router';
 import { UserRouter } from './routers/user.router';
 import { AuthRouter } from './routers/auth.router';
+import { ErrorMiddleware } from './middlewares/error.middleware';
 
 export default class App {
   private app: Express;
@@ -50,6 +52,8 @@ export default class App {
         }
       },
     );
+
+    this.app.use(ErrorMiddleware);
   }
 
   private routes(): void {

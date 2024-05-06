@@ -4,7 +4,7 @@ import { API_KEY } from '@/config';
 import { User } from '@/types/express';
 
 export class AuthMiddlewares {
-  async verifyToken(req: Request, next: NextFunction) {
+  public verifyToken = async (req: Request, next: NextFunction) => {
     try {
       const token = req.header('Authorization')?.replace('Bearer ', '');
       if (!token) throw new Error('Token invalid!');
